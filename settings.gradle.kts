@@ -1,0 +1,1 @@
+rootProject.name = "com.example.news-app-server"
