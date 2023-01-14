@@ -15,19 +15,19 @@ class DAOFacadeImpl : DAOFacade {
         Users.select { Users.id eq id }.map { it.toUser() }.singleOrNull()
     }
 
-    override suspend fun createUser(username: String, password: String): User? = dbQuery {
+    override suspend fun createUser(user: User): User? = dbQuery {
         val insertStatement = Users.insert {
-            it[Users.username] = username
-            it[Users.password] = password
+            it[id] = user.id
+            it[username] = user.username
+            it[password] = user.password
         }
         insertStatement.resultedValues?.singleOrNull()?.toUser()
     }
 
-    override suspend fun editUser(id: Int, username: String, password: String): Boolean = dbQuery {
-        Users.update({ Users.id eq id }) {
-            it[Users.id] = id
-            it[Users.username] = username
-            it[Users.password] = password
+    override suspend fun editUser(user: User): Boolean = dbQuery {
+        Users.update({ Users.id eq user.id }) {
+            it[username] = user.username
+            it[password] = user.password
         } > 0
     }
 
@@ -43,25 +43,27 @@ class DAOFacadeImpl : DAOFacade {
         NewsTable.select { NewsTable.id eq id }.map { it.toNews() }.singleOrNull()
     }
 
-    override suspend fun createNews(title: String, body: String, category: Category, viewCount: Int): News? =
+    override suspend fun createNews(news: News): News? =
         dbQuery {
-            val insertStatement = NewsTable.insert {
-                it[NewsTable.title] = title
-                it[NewsTable.body] = body
-                it[NewsTable.category] = category
-                it[NewsTable.viewCount] = viewCount
+            val insertStatement = NewsTable.insert { table ->
+                news.id?.let {
+                    table[id] = news.id
+                }
+                table[title] = news.title
+                table[body] = news.body
+                table[categoryId] = news.categoryId
+                table[viewCount] = news.viewCount
             }
             insertStatement.resultedValues?.singleOrNull()?.toNews()
         }
 
-    override suspend fun editNews(id: Int, title: String, body: String, category: Category, viewCount: Int): Boolean =
+    override suspend fun editNews(news: News): Boolean =
         dbQuery {
-            NewsTable.update({ NewsTable.id eq id }) {
-                it[NewsTable.id] = id
-                it[NewsTable.title] = title
-                it[NewsTable.body] = body
-                it[NewsTable.category] = category
-                it[NewsTable.viewCount] = viewCount
+            NewsTable.update({ NewsTable.id eq news.id!! }) {
+                it[title] = news.title
+                it[body] = news.body
+                it[categoryId] = news.categoryId
+                it[viewCount] = news.viewCount
             } > 0
         }
 
@@ -77,22 +79,22 @@ class DAOFacadeImpl : DAOFacade {
         FavoriteCategories.select { FavoriteCategories.id eq id }.map { it.toFavoriteCategory() }.singleOrNull()
     }
 
-    override suspend fun createFavoriteCategory(userId: Int, category: Category): FavoriteCategory? =
+    override suspend fun createFavoriteCategory(favoriteCategory: FavoriteCategory): FavoriteCategory? =
         dbQuery {
             val insertStatement = FavoriteCategories.insert {
-                it[FavoriteCategories.userId] = userId
-                it[FavoriteCategories.category] = category
+                it[id] = favoriteCategory.id
+                it[userId] = favoriteCategory.userId
+                it[category] = favoriteCategory.category
             }
             insertStatement.resultedValues?.singleOrNull()?.toFavoriteCategory()
         }
 
 
-    override suspend fun editFavoriteCategory(id: Int, userId: Int, category: Category): Boolean =
+    override suspend fun editFavoriteCategory(favoriteCategory: FavoriteCategory): Boolean =
         dbQuery {
-            FavoriteCategories.update({ FavoriteCategories.id eq id }) {
-                it[FavoriteCategories.id] = id
-                it[FavoriteCategories.userId] = userId
-                it[FavoriteCategories.category] = category
+            FavoriteCategories.update({ FavoriteCategories.id eq favoriteCategory.id }) {
+                it[userId] = favoriteCategory.userId
+                it[category] = favoriteCategory.category
             } > 0
         }
 

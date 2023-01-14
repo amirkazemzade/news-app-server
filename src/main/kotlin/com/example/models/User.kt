@@ -5,7 +5,16 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 
 @Serializable
-data class User(val id: Int, val username: String, val password: String)
+data class User(val id: Int = 0, val username: String, val password: String) : DataModel() {
+
+    fun copyWith(
+        id: Int? = null, username: String? = null, password: String? = null,
+    ): User = User(
+        id ?: this.id,
+        username ?: this.username,
+        password ?: this.password,
+    )
+}
 
 object Users : Table() {
     val id = integer("id").autoIncrement()
