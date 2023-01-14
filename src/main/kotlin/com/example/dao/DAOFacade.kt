@@ -14,6 +14,8 @@ interface DAOFacade {
     suspend fun editUser(user: User): Boolean
     suspend fun deleteUser(id: Int): Boolean
 
+    suspend fun user(user: User): User?
+
     suspend fun allNews(): List<News>
     suspend fun news(id: Int): News?
     suspend fun createNews(news: News): News?

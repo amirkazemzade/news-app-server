@@ -32,11 +32,16 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
+    implementation("io.ktor:ktor-server-request-validation:$ktor_version")
+
     // database
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("com.h2database:h2:$h2_version")
+    implementation("io.ktor:ktor-server-host-common-jvm:2.2.2")
+    implementation("io.ktor:ktor-server-status-pages-jvm:2.2.2")
+    implementation("io.ktor:ktor-server-auth-jwt-jvm:2.2.2")
 
     // test
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")

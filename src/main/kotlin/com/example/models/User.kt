@@ -1,11 +1,13 @@
 package com.example.models
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 
 @Serializable
-data class User(val id: Int = 0, val username: String, val password: String) : DataModel() {
+@SerialName("User")
+data class User(val id: Int? = null, val username: String, val password: String) : DataModel() {
 
     fun copyWith(
         id: Int? = null, username: String? = null, password: String? = null,

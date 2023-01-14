@@ -1,10 +1,12 @@
 package com.example.models
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 
 @Serializable
+@SerialName("Favorite Category")
 data class FavoriteCategory(
     val id: Int = 0,
     val userId: Int,

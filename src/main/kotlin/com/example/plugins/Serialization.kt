@@ -1,9 +1,6 @@
 package com.example.plugins
 
-import com.example.models.DataModel
-import com.example.models.FavoriteCategory
-import com.example.models.News
-import com.example.models.User
+import com.example.models.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -20,6 +17,7 @@ fun Application.configureSerialization() {
             subclass(News::class)
             subclass(User::class)
             subclass(FavoriteCategory::class)
+            subclass(TokenModel::class)
         }
     }
     install(ContentNegotiation) {

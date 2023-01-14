@@ -15,17 +15,26 @@ class DAOFacadeImpl : DAOFacade {
         Users.select { Users.id eq id }.map { it.toUser() }.singleOrNull()
     }
 
+    override suspend fun user(user: User): User? = dbQuery {
+        Users.select { Users.username eq user.username }
+            .andWhere { Users.password eq user.password }
+            .map { it.toUser() }
+            .singleOrNull()
+    }
+
     override suspend fun createUser(user: User): User? = dbQuery {
-        val insertStatement = Users.insert {
-            it[id] = user.id
-            it[username] = user.username
-            it[password] = user.password
+        val insertStatement = Users.insert { table ->
+            user.id?.let {
+                table[id] = it
+            }
+            table[username] = user.username
+            table[password] = user.password
         }
         insertStatement.resultedValues?.singleOrNull()?.toUser()
     }
 
     override suspend fun editUser(user: User): Boolean = dbQuery {
-        Users.update({ Users.id eq user.id }) {
+        Users.update({ Users.id eq user.id!! }) {
             it[username] = user.username
             it[password] = user.password
         } > 0
@@ -47,7 +56,7 @@ class DAOFacadeImpl : DAOFacade {
         dbQuery {
             val insertStatement = NewsTable.insert { table ->
                 news.id?.let {
-                    table[id] = news.id
+                    table[id] = it
                 }
                 table[title] = news.title
                 table[body] = news.body

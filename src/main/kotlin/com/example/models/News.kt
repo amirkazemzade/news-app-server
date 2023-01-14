@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 
-@Serializable()
+@Serializable
 @SerialName("News")
 data class News @OptIn(ExperimentalSerializationApi::class) constructor(
     val id: Int? = null,
