@@ -8,29 +8,29 @@ import org.jetbrains.exposed.sql.Table
 @Serializable
 @SerialName("Favorite Category")
 data class FavoriteCategory(
-    val id: Int = 0,
+    val id: Int? = null,
     val userId: Int,
-    val category: Category
+    @SerialName("category_id") val categoryId: Int,
 ) : DataModel() {
     fun copyWith(
         id: Int? = null,
         userId: Int? = null,
-        category: Category? = null,
+        categoryId: Int? = null,
     ) = FavoriteCategory(
         id ?: this.id,
         userId ?: this.userId,
-        category ?: this.category,
+        categoryId ?: this.categoryId,
     )
 }
 
 object FavoriteCategories : Table() {
     val id = integer("id").autoIncrement()
     val userId = integer("user_id")
-    val category = enumeration<Category>("category")
+    val categoryId = integer("category_id")
 }
 
 fun ResultRow.toFavoriteCategory() = FavoriteCategory(
     id = this[FavoriteCategories.id],
     userId = this[FavoriteCategories.userId],
-    category = this[FavoriteCategories.category],
+    categoryId = this[FavoriteCategories.categoryId],
 )

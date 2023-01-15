@@ -22,6 +22,12 @@ class DAOFacadeImpl : DAOFacade {
             .singleOrNull()
     }
 
+    override suspend fun user(username: String): User? = dbQuery {
+        Users.select { Users.username eq username }
+            .map { it.toUser() }
+            .singleOrNull()
+    }
+
     override suspend fun createUser(user: User): User? = dbQuery {
         val insertStatement = Users.insert { table ->
             user.id?.let {
@@ -88,12 +94,18 @@ class DAOFacadeImpl : DAOFacade {
         FavoriteCategories.select { FavoriteCategories.id eq id }.map { it.toFavoriteCategory() }.singleOrNull()
     }
 
+    override suspend fun favoriteCategory(userId: Int, categoryId: Int): FavoriteCategory? = dbQuery {
+        FavoriteCategories.select { FavoriteCategories.userId eq userId }
+            .andWhere { FavoriteCategories.categoryId eq categoryId }
+            .map { it.toFavoriteCategory() }
+            .singleOrNull()
+    }
+
     override suspend fun createFavoriteCategory(favoriteCategory: FavoriteCategory): FavoriteCategory? =
         dbQuery {
             val insertStatement = FavoriteCategories.insert {
-                it[id] = favoriteCategory.id
                 it[userId] = favoriteCategory.userId
-                it[category] = favoriteCategory.category
+                it[categoryId] = favoriteCategory.categoryId
             }
             insertStatement.resultedValues?.singleOrNull()?.toFavoriteCategory()
         }
@@ -101,9 +113,9 @@ class DAOFacadeImpl : DAOFacade {
 
     override suspend fun editFavoriteCategory(favoriteCategory: FavoriteCategory): Boolean =
         dbQuery {
-            FavoriteCategories.update({ FavoriteCategories.id eq favoriteCategory.id }) {
+            FavoriteCategories.update({ FavoriteCategories.id eq favoriteCategory.id!! }) {
                 it[userId] = favoriteCategory.userId
-                it[category] = favoriteCategory.category
+                it[categoryId] = favoriteCategory.categoryId
             } > 0
         }
 
@@ -111,6 +123,9 @@ class DAOFacadeImpl : DAOFacade {
         FavoriteCategories.deleteWhere { FavoriteCategories.id eq id } > 0
     }
 
+    override suspend fun fetchUserCategories(userId: Int): List<FavoriteCategory> = dbQuery {
+        FavoriteCategories.select { FavoriteCategories.userId eq userId }.map { it.toFavoriteCategory() }
+    }
 }
 
 val dao: DAOFacade = DAOFacadeImpl()

@@ -18,6 +18,7 @@ fun Application.configureSerialization() {
             subclass(User::class)
             subclass(FavoriteCategory::class)
             subclass(TokenModel::class)
+            subclass(CategoriesModel::class)
         }
     }
     install(ContentNegotiation) {

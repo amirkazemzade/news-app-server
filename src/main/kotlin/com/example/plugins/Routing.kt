@@ -1,5 +1,6 @@
 package com.example.plugins
 
+import com.example.routes.favoriteCategoryRoute
 import com.example.routes.newsRoute
 import com.example.routes.userRoute
 import io.ktor.server.application.*
@@ -15,6 +16,7 @@ fun Application.configureRouting() {
         }
         newsRoute()
         userRoute()
+        favoriteCategoryRoute()
     }
 }
 

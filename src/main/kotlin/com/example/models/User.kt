@@ -7,10 +7,16 @@ import org.jetbrains.exposed.sql.Table
 
 @Serializable
 @SerialName("User")
-data class User(val id: Int? = null, val username: String, val password: String) : DataModel() {
+data class User(
+    val id: Int? = null,
+    val username: String,
+    val password: String
+) : DataModel() {
 
     fun copyWith(
-        id: Int? = null, username: String? = null, password: String? = null,
+        id: Int? = null,
+        username: String? = null,
+        password: String? = null,
     ): User = User(
         id ?: this.id,
         username ?: this.username,
