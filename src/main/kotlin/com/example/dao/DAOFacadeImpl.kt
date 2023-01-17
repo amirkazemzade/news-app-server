@@ -35,6 +35,7 @@ class DAOFacadeImpl : DAOFacade {
             }
             table[username] = user.username
             table[password] = user.password
+            table[isAdmin] = user.isAdmin
         }
         insertStatement.resultedValues?.singleOrNull()?.toUser()
     }
@@ -84,6 +85,18 @@ class DAOFacadeImpl : DAOFacade {
 
     override suspend fun deleteNews(id: Int): Boolean = dbQuery {
         NewsTable.deleteWhere { NewsTable.id eq id } > 0
+    }
+
+    override suspend fun userAllNews(userId: Int): List<News> = dbQuery {
+        val favoriteCategories = FavoriteCategories
+            .slice(FavoriteCategories.categoryId)
+            .select { FavoriteCategories.userId eq userId }
+        println(favoriteCategories)
+        NewsTable
+            .select { NewsTable.categoryId inSubQuery favoriteCategories }
+            .orderBy(NewsTable.categoryId)
+            .orderBy(NewsTable.viewCount, SortOrder.DESC)
+            .map { it.toNews() }
     }
 
     override suspend fun allFavoriteCategories(): List<FavoriteCategory> = dbQuery {

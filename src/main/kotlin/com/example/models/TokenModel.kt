@@ -5,4 +5,4 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("Token")
-data class TokenModel(val token: String) : DataModel()
+data class TokenModel(val token: String) : DataModel

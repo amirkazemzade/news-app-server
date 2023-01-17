@@ -19,6 +19,8 @@ fun Application.configureSerialization() {
             subclass(FavoriteCategory::class)
             subclass(TokenModel::class)
             subclass(CategoriesModel::class)
+            subclass(DataListModel::class)
+            subclass(NewsWithoutBody::class)
         }
     }
     install(ContentNegotiation) {

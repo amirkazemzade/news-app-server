@@ -52,7 +52,7 @@ fun Routing.userRoute() {
             )
             return@post
         }
-        val createdUser = dao.createUser(signingUser)
+        val createdUser = dao.createUser(signingUser.copyWith(isAdmin = false))
         val token = createToken(createdUser!!)
         call.respond(
             ResponseModel(

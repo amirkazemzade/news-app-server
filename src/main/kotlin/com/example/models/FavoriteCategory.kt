@@ -11,7 +11,7 @@ data class FavoriteCategory(
     val id: Int? = null,
     val userId: Int,
     @SerialName("category_id") val categoryId: Int,
-) : DataModel() {
+) : DataModel {
     fun copyWith(
         id: Int? = null,
         userId: Int? = null,

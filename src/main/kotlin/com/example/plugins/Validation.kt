@@ -1,6 +1,8 @@
 package com.example.plugins
 
+import com.example.exceptions.DefaultException
 import com.example.exceptions.NotFoundException
+import com.example.exceptions.UnauthorizedException
 import com.example.models.ResponseModel
 import com.example.models.State
 import io.ktor.http.*
@@ -20,6 +22,20 @@ fun Application.configureValidation() {
             }
 
             exception<NumberFormatException> { call, cause ->
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    ResponseModel(state = State.Failure, message = cause.message)
+                )
+            }
+
+            exception<UnauthorizedException> { call, cause ->
+                call.respond(
+                    status = HttpStatusCode.Unauthorized,
+                    ResponseModel(state = State.Failure, message = cause.message)
+                )
+            }
+
+            exception<DefaultException> { call, cause ->
                 call.respond(
                     status = HttpStatusCode.BadRequest,
                     ResponseModel(state = State.Failure, message = cause.message)

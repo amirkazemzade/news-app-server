@@ -16,7 +16,7 @@ data class News @OptIn(ExperimentalSerializationApi::class) constructor(
     @SerialName("category_id") val categoryId: Int,
     @EncodeDefault(EncodeDefault.Mode.ALWAYS)
     @SerialName("view_count") val viewCount: Int = 0,
-) : DataModel() {
+) : DataModel {
     fun copyWith(
         id: Int? = null,
         title: String? = null,
@@ -24,11 +24,18 @@ data class News @OptIn(ExperimentalSerializationApi::class) constructor(
         categoryId: Int? = null,
         viewCount: Int? = null,
     ): News = News(
-        id ?: this.id,
-        title ?: this.title,
-        body ?: this.body,
-        categoryId ?: this.categoryId,
-        viewCount ?: this.viewCount,
+        id = id ?: this.id,
+        title = title ?: this.title,
+        body = body ?: this.body,
+        categoryId = categoryId ?: this.categoryId,
+        viewCount = viewCount ?: this.viewCount,
+    )
+
+    fun withoutBody() = NewsWithoutBody(
+        id = id,
+        title = title,
+        categoryId = categoryId,
+        viewCount = viewCount,
     )
 }
 

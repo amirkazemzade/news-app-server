@@ -2,6 +2,7 @@ package com.example.routes
 
 import com.example.dao.dao
 import com.example.exceptions.NotFoundException
+import com.example.findUser
 import com.example.models.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -80,9 +81,4 @@ private suspend fun fetchFavoriteCategories(userId: Int): CategoriesModel {
         }.toList()
     )
     return categories
-}
-
-private suspend fun findUser(principal: JWTPrincipal?): User {
-    val username = principal!!.payload.getClaim("username").asString()
-    return dao.user(username) ?: throw NotFoundException
 }

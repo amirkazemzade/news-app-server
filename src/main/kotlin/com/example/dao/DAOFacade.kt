@@ -16,24 +16,22 @@ interface DAOFacade {
     suspend fun editUser(user: User): Boolean
     suspend fun deleteUser(id: Int): Boolean
 
-
+    /* News */
+    suspend fun editNews(news: News): Boolean
     suspend fun allNews(): List<News>
     suspend fun news(id: Int): News?
     suspend fun createNews(news: News): News?
-
-    /* News */
-    suspend fun editNews(news: News): Boolean
-
     suspend fun deleteNews(id: Int): Boolean
+
+    /* User News */
+    suspend fun userAllNews(userId: Int): List<News>
 
     /* Favorite Category */
     suspend fun allFavoriteCategories(): List<FavoriteCategory>
     suspend fun favoriteCategory(id: Int): FavoriteCategory?
-
     suspend fun favoriteCategory(userId: Int, categoryId: Int): FavoriteCategory?
     suspend fun createFavoriteCategory(favoriteCategory: FavoriteCategory): FavoriteCategory?
     suspend fun editFavoriteCategory(favoriteCategory: FavoriteCategory): Boolean
     suspend fun deleteFavoriteCategory(id: Int): Boolean
-
     suspend fun fetchUserCategories(userId: Int): List<FavoriteCategory>
 }
