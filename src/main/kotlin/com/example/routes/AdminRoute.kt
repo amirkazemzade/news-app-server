@@ -28,7 +28,7 @@ fun Routing.adminRoute() {
                     ResponseModel(
                         state = State.Success,
                         result = DataListModel(
-                            items = dao.allNews()
+                            items = dao.allNews().map { it.withoutBody() }
                         )
                     ),
                 )
@@ -50,7 +50,7 @@ fun Routing.adminRoute() {
                 checkAdmin()
                 val news = call.receive<News>()
                 val createdNews = dao.createNews(news)
-                call.respondRedirect("admin/news/${createdNews?.id}")
+                call.respondRedirect("/admin/news/${createdNews?.id}")
             }
 
             patch("{id}") {
@@ -87,5 +87,5 @@ fun Routing.adminRoute() {
 private suspend fun PipelineContext<Unit, ApplicationCall>.checkAdmin() {
     val principal = call.principal<JWTPrincipal>()
     val user = findUser(principal)
-    if (!user.isAdmin) throw UnauthorizedException
+    if (user.isAdmin != true) throw UnauthorizedException
 }

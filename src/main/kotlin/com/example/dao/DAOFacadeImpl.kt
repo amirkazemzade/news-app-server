@@ -35,7 +35,7 @@ class DAOFacadeImpl : DAOFacade {
             }
             table[username] = user.username
             table[password] = user.password
-            table[isAdmin] = user.isAdmin
+            table[isAdmin] = user.isAdmin ?: false
         }
         insertStatement.resultedValues?.singleOrNull()?.toUser()
     }

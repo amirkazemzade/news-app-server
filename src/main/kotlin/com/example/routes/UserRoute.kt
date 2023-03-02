@@ -34,7 +34,10 @@ fun Routing.userRoute() {
         call.respond(
             ResponseModel(
                 state = State.Success,
-                result = TokenModel(token!!)
+                result = TokenModel(
+                    token!!,
+                    if (user.isAdmin == true) "Admin" else "User"
+                )
             )
         )
     }
@@ -57,7 +60,10 @@ fun Routing.userRoute() {
         call.respond(
             ResponseModel(
                 state = State.Success,
-                result = TokenModel(token!!)
+                result = TokenModel(
+                    token!!,
+                    if (createdUser.isAdmin == true) "Admin" else "User"
+                )
             )
         )
     }
@@ -72,7 +78,7 @@ fun Routing.userRoute() {
     }
 }
 
-private fun createToken(user: User): String? {
+private fun createToken(user: User): String {
     return JWT.create()
         .withAudience("http://0.0.0.0:8080/hello")
         .withIssuer("http://0.0.0.0:8080/")

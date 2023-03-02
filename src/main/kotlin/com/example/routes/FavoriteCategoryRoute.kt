@@ -21,7 +21,7 @@ fun Routing.favoriteCategoryRoute() {
                 call.respond(ResponseModel(state = State.Success, result = categories))
             }
 
-            post {
+            patch {
                 val addingCategories = call.receive<CategoriesModel>()
                 val principal = call.principal<JWTPrincipal>()
                 val user = findUser(principal)

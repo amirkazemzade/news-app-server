@@ -14,7 +14,7 @@ data class User @OptIn(ExperimentalSerializationApi::class) constructor(
     val username: String,
     val password: String,
     @EncodeDefault(mode = EncodeDefault.Mode.NEVER)
-    val isAdmin: Boolean = false,
+    val isAdmin: Boolean? = false,
 ) : DataModel {
 
     fun copyWith(

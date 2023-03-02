@@ -1,34 +1,38 @@
 package com.example
 
-import com.example.models.*
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.polymorphic
-import kotlinx.serialization.modules.subclass
+import com.example.dao.DatabaseFactory
+import com.example.dao.dao
+import kotlinx.coroutines.runBlocking
 
-fun main() {
+suspend fun main() {
 
-    val module = SerializersModule {
-        polymorphic(DataModel::class) {
-            subclass(News::class)
-            subclass(User::class)
-        }
-    }
+//    val module = SerializersModule {
+//        polymorphic(DataModel::class) {
+//            subclass(News::class)
+//            subclass(User::class)
+//        }
+//    }
+//
+//    val format = Json { serializersModule = module }
+//
+//    val news = News(id = 0, title = "title", body = "body", categoryId = 2)
+//
+//    println(format.encodeToString(news))
+//
+//    val response = ResponseModel(
+//        state = State.Success,
+//        result = news
+//    )
+    getUserNews()
 
-    val format = Json { serializersModule = module }
-
-    val news = News(id = 0, title = "title", body = "body", categoryId = 2)
-
-    println(format.encodeToString(news))
-
-    val response = ResponseModel(
-        state = State.Success,
-        result = news
-    )
-
-    println(format.encodeToString(response))
+//    println(format.encodeToString(response))
 
 
-    println(mapOf("response" to response))
+//    println(mapOf("response" to response))
+}
+
+fun getUserNews() = runBlocking {
+    DatabaseFactory.init()
+    val userNews = dao.userAllNews(2)
+    println(userNews)
 }
